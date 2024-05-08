@@ -9,22 +9,14 @@ class TaskController{
        try {
         const{task_details}=req.body;
         const email_id =parseInt(req.params.id);
-
-       
         const inboxRepository = entityManager.getRepository(Inbox);
-        
-       
         const inbox = await inboxRepository.findOne( {where:{ id: email_id }} );
-        
-       
         if (!inbox) {
           return res.status(404).send({ message: "Inbox not found" });
         }
-        
-        
         const task = new Task();
         task.task_details = task_details;
-        
+        task.created_at=new Date();
         task.email = inbox; 
         
       
@@ -40,14 +32,42 @@ class TaskController{
       }
       getAllTasks=async(req:Request,res:Response)=>{
         try{
+          const defaultpage=1;
+          const defaultsize=10;
+          
+          const pageQuery = parseInt(req.query.page as string, 10);
+          const sizeQuery = parseInt(req.query.size as string, 10);
+  
+          const page = isNaN(pageQuery) ? defaultpage : Math.max(1, pageQuery); // Ensure page is at least 1
+          const size = isNaN(sizeQuery) ? defaultsize : Math.max(1, sizeQuery); // Ensure size is at least 1
+  
+          const skip=(page-1) * size
+          const queryOptions = {
+            relations: ['email'],
+            skip: skip,
+            take: size,
+        };
             const taskRepository=entityManager.getRepository(Task);
-            const data=await taskRepository.find({relations: ['customer']})
-            res.status(200).send({"message":"data find successfully",data:data});
+            const taskdata=await taskRepository.find(queryOptions );
+            const totalRecords = await taskRepository.count();
+            res.status(200).send({"message":"data find successfully",taskdata:taskdata,page:page,size:size,totalRecords:totalRecords});
 
         }catch(error:any){
             res.status(400).send({"message":error.message}) 
         }
       }
+
+
+
+
+
+
+
+
+
+
+
+
       deleteTask=async(req:Request,res:Response)=>{
           try{ 
             const taskRepository=entityManager.getRepository(Task);

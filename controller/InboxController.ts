@@ -47,18 +47,26 @@ res.status(200).send({"message":"data find successfully",data:data});
 } catch (error:any) {
     res.status(400).send({"message":error.message})
     
-}
+}}
+GetEmailbyId=async(req:Request,res:Response)=>{
+   try{
+    const emailId=parseInt(req.params.id);
+    const inboxRepository=entityManager.getRepository(Inbox);
+    const FindOptions={
+       where:{id:emailId},
+       relations: ['customer']
+
+    }
+    const data=await inboxRepository.findOne(FindOptions);
+    res.status(200).send({"message":"data find successfully",data:data});
+    
+    } catch (error:any) {
+        res.status(400).send({"message":error.message})
+        
+    }}
 
 
 
 }
-
-
-
-
-}
-
-
-
 const inboxContoller= new InboxContoller;
 export default inboxContoller;
