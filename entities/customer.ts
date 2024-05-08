@@ -2,11 +2,15 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
+    OneToOne,
+    JoinColumn,
+    OneToMany,
+   
     } from "typeorm";
     import {Task} from './task';
    
     @Entity()
-    export class Customer{
+    export class Customer {
       @PrimaryGeneratedColumn()
        public id: number;
     
@@ -19,12 +23,15 @@ import {
        @Column()
        public email: string;
 
-     //    @OneToOne(()=>Task,{cascade:true,eager:true})
-     //    @JoinColumn({name:'task_id'})
-     //    public task:Task;
+      // @OneToMany(()=>Task,(task)=>task.email)
+      // @JoinColumn({name:'task_id'})
+      //  public task:Task;
+
+      //  @Column()
+      //  public status:boolean
 
        @Column() 
-       public ceated_at:Date;
+       public created_at:Date;
        
        @Column()
        public updated_at:Date;

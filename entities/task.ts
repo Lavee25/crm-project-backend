@@ -6,6 +6,7 @@ import {
     JoinColumn,
    } from "typeorm";
    import {Customer} from "./customer";
+import { Inbox } from "./inbox";
    
     @Entity()
     export class Task{
@@ -15,20 +16,20 @@ import {
       @Column()
        public task_details: string;
     
-       @Column()
+      @Column()
        public due_date: Date;
         
        @Column()
        public checked: boolean;
 
        @Column() 
-       public ceated_at:Date;
+       public created_at:Date;
        
-       @Column()
-       public updated_at:Date;
+        @Column()
+        public updated_at:Date;
 
-       @ManyToOne(()=>Customer,{cascade:true,eager:true})
-       @JoinColumn({name:'customer_id'})
-       public customer:Customer
+       @ManyToOne(()=>Inbox,(inbox)=>inbox.task)
+       @JoinColumn({name:'email_id'})
+       public email:Inbox;
     
     }

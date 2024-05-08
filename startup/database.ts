@@ -1,4 +1,3 @@
-
 import 'reflect-metadata';
 import {DataSource} from 'typeorm';
 import { Admin } from '../entities/admin';
@@ -6,6 +5,7 @@ import { Customer } from '../entities/customer';
 import { Task } from '../entities/task';
 import { Note } from '../entities/note';
 import { Inbox } from '../entities/inbox';
+
 
 export const AppDataSource=new DataSource({
     type:"mysql",

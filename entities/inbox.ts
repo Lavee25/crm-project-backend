@@ -3,8 +3,12 @@ import {
     Column,
     PrimaryGeneratedColumn,
     OneToOne,
-    JoinColumn} from "typeorm";
-    import {Customer} from './customer';
+    ManyToOne,
+    JoinColumn,
+    OneToMany} from "typeorm";
+  import {Customer} from './customer';
+import { Task } from "./task";
+//import { Contect } from "./contect";
    
     @Entity()
     export class Inbox{
@@ -14,18 +18,24 @@ import {
       @Column()
        public subject: string;
     
-       @Column()
+      @Column()
        public body: string;
-        
-       @Column()
-       public from: string;
 
-       @OneToOne(()=>Customer,{cascade:true,eager:true})
-       @JoinColumn({name:'customer_id'})
-       public task:Customer;
+      @Column()
+       public email: string;
 
-       
+      @OneToOne(()=>Customer,(customer)=>customer.id,{cascade:true,eager:true})
+      @JoinColumn({name:'customer_id'})
+      public customer:Customer;
+      
+      @OneToMany(()=>Task,(task)=>task.email)
+      @JoinColumn({name:'Task_id'})
+       public task:Task;
 
+      @Column()
+      public created_at: Date;
 
+      @Column()
+      public updated_at: Date;
       
     }
