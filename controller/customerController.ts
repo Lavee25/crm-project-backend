@@ -28,9 +28,27 @@ catch(error:any){
 }
  getAllCustomer=async(req:Request,res:Response)=>{
     try{
-    const customer=entityManager.getRepository(Customer);
-    const customerData=await customer.find();
-    return res.status(200).send({"message":"find customer data successfully ",customerData:customerData});
+      const defaultpage=1;
+      const defaultsize=10;
+
+      const pageQuery = parseInt(req.query.page as string, 10);
+          const sizeQuery = parseInt(req.query.size as string, 10);
+  
+          const page = isNaN(pageQuery) ? defaultpage : Math.max(1, pageQuery); // Ensure page is at least 1
+          const size = isNaN(sizeQuery) ? defaultsize : Math.max(1, sizeQuery); // Ensure size is at least 1
+  
+          const skip=(page-1) * size
+          const queryOptions = {
+            // relations: ['email'],
+            skip: skip,
+            take: size,
+        };
+
+
+   const customer=entityManager.getRepository(Customer);
+   const customerData=await customer.find(queryOptions );
+   const totalRecords=await customer.count();
+    return res.status(200).send({"message":"find customer data successfully ",customerData:customerData,page:page,size:size,totalRecords:totalRecords});
  }catch(error:any){
     res.status(400).send({"message":error.message});
  }
