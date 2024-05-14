@@ -5,4 +5,6 @@ import customerController from '../controller/CustomerController';
 
 router.post('/addCustomer',customerController.addCustomer);
 router.get('/getCustomers',customerController.getAllCustomer);
+router.get('/getCustomerbyname',customerController.findCustomer);
+
 export default router;

@@ -26,6 +26,19 @@ catch(error:any){
  return res.status(400).send({"error":error.message})
 }
 }
+
+findCustomer=async(req:Request,res:Response)=>{
+   try{
+     // const {first_name}=req.body;
+      const customerName = req.query.name as string; 
+      const customerReposiratiry=await entityManager.getRepository(Customer);
+      const customer= await customerReposiratiry.find({where:{first_name:customerName}});
+      if(!customer) return  res.status(401).send({message:'customer not exist'});
+      return  res.status(200).send({'message':'customer data find sucessfully',customerData:customer});
+   }catch(error:any){
+    return res .status(200).send({'message':error.message})
+   }
+}
  getAllCustomer=async(req:Request,res:Response)=>{
     try{
       const defaultpage=1;
@@ -43,8 +56,6 @@ catch(error:any){
             skip: skip,
             take: size,
         };
-
-
    const customer=entityManager.getRepository(Customer);
    const customerData=await customer.find(queryOptions );
    const totalRecords=await customer.count();

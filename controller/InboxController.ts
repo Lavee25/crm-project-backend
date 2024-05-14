@@ -4,7 +4,7 @@ import { Inbox } from "../entities/inbox";
 import { entityManager } from "../startup/database";
 
 
-class InboxContoller{
+class InboxController{
     constructor(){}
 
 SaveEmailAndCustomer=async(req:Request,res:Response)=>{
@@ -20,8 +20,6 @@ try {
    customer.created_at=new Date();
    customer.updated_at=new Date();
    
-
-
    const inbox=new Inbox();
    inbox.subject=subject;
    inbox.body=body;
@@ -41,13 +39,31 @@ try {
 GetEmailAndCustomer=async(req:Request,res:Response)=>{
 try {
 const inboxRepository=entityManager.getRepository(Inbox);
-const data=await inboxRepository.find({relations: ['customer']})
+const FindOptions={
+    relations: ['customer'],
+    where:{status:false}
+}
+const data=await inboxRepository.find(FindOptions)
 res.status(200).send({"message":"data find successfully",data:data});
 
 } catch (error:any) {
     res.status(400).send({"message":error.message})
     
 }}
+GetEmailAndCustomerByStatus=async(req:Request,res:Response)=>{
+    try {
+    const inboxRepository=entityManager.getRepository(Inbox);
+    const FindOptions={
+        relations: ['customer'],
+        where:{status:true}
+    }
+    const data=await inboxRepository.find(FindOptions)
+    res.status(200).send({"message":"data find successfully",data:data});
+    
+    } catch (error:any) {
+        res.status(400).send({"message":error.message})
+        
+    }}
 GetEmailbyId=async(req:Request,res:Response)=>{
    try{
     const emailId=parseInt(req.params.id);
@@ -64,9 +80,31 @@ GetEmailbyId=async(req:Request,res:Response)=>{
         res.status(400).send({"message":error.message})
         
     }}
+    ChangeEmailStatus=async(req:Request,res:Response)=>{
+        try {
+            const {status} = req.body;
+            const id = parseInt(req.params.id);
+            //console.log("status",status ,"id",id);
+            const inboxRepository = entityManager.getRepository(Inbox);
+            const result = await inboxRepository.update({ id:id }, {status:status});
+        
+            if (result.affected === 1) {
+              res.status(200).json({ message: 'Email status updated successfully' });
+            } else {
+              res.status(404).json({ message: 'Email not found' });
+            }
+           //console.log(result);
+            } catch (error) {
+            //console.error(error);
+            res.status(500).json({ message: 'An error occurred while updating the email status' });
+            }
+        
+        };
+
+    
 
 
 
 }
-const inboxContoller= new InboxContoller;
-export default inboxContoller;
+const inboxController= new InboxController;
+export default inboxController;

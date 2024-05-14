@@ -5,7 +5,8 @@ import {
     OneToOne,
     ManyToOne,
     JoinColumn,
-    OneToMany} from "typeorm";
+    OneToMany,
+    Binary} from "typeorm";
   import {Customer} from './customer';
 import { Task } from "./task";
 //import { Contect } from "./contect";
@@ -31,6 +32,9 @@ import { Task } from "./task";
       @OneToMany(()=>Task,(task)=>task.email)
       @JoinColumn({name:'Task_id'})
        public task:Task;
+       
+       @Column()
+      public status:Boolean;
 
       @Column()
       public created_at: Date;
