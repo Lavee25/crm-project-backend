@@ -9,23 +9,23 @@ const adminSecreteKey='JWT_ADMIN_SECRETE_KEY';
 class AuthController{
 constructor(){}
  
-adminSignup =async(req:Request,res:Response)=>{
-try{
-const {first_name,last_name,email,password}=req.body;
-const admin=entityManager.getRepository(Admin);
-const AdminExist=await admin.findOne({where:{email:email}});
-if(AdminExist) return res.status(401).send({message:'admin already exist'});
-const hashpassword=passwordHash.generate(password);
-const adminData=await admin.save({first_name,last_name,email,password:hashpassword});
-const userId=adminData.id;
-const token=jwt.sign({id:userId},adminSecreteKey); 
+// adminSignup =async(req:Request,res:Response)=>{
+// try{
+// const {first_name,last_name,email,password}=req.body;
+// const admin=entityManager.getRepository(Admin);
+// const AdminExist=await admin.findOne({where:{email:email}});
+// if(AdminExist) return res.status(401).send({message:'admin already exist'});
+// const hashpassword=passwordHash.generate(password);
+// const adminData=await admin.save({first_name,last_name,email,password:hashpassword});
+// const userId=adminData.id;
+// const token=jwt.sign({id:userId},adminSecreteKey); 
 
-return res.status(200).send({"message":"admin Signup successfully",data:adminData})
-}
-catch(error:any){
-// return res.status(400).send({"error":error.message})
-}
-}
+// return res.status(200).send({"message":"admin Signup successfully",data:adminData})
+// }
+// catch(error:any){
+// // return res.status(400).send({"error":error.message})
+// }
+// }
 adminLogin=async(req:Request,res:Response)=>{
     try{
         const{email,password}=req.body;

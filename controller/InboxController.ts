@@ -100,7 +100,23 @@ GetEmailbyId=async(req:Request,res:Response)=>{
             }
         
         };
-
+        GetEmailbyEmail=async(req:Request,res:Response)=>{
+            try{
+             const customerEmail  = req.query.email as  string
+             console.log("customerEmail",customerEmail)
+             const inboxRepository=await entityManager.getRepository(Inbox);
+             const FindOptions={
+                where:{email:customerEmail},
+                relations: ['customer']
+         
+             }
+             const data=await inboxRepository.find(FindOptions);
+             res.status(200).send({"message":"data find successfully",data:data});
+             
+             } catch (error:any) {
+                 res.status(400).send({"message":error.message})
+                 
+             }}
     
 
 

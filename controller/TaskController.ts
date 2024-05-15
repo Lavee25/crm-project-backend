@@ -7,7 +7,7 @@ class TaskController{
     constructor(){}
       addTaskToEmail=async(req:Request,res:Response)=>{
        try {
-        const{task_details}=req.body;
+        const{task_details,due_date}=req.body;
         const email_id =parseInt(req.params.id);
         const inboxRepository = entityManager.getRepository(Inbox);
         const inbox = await inboxRepository.findOne( {where:{ id: email_id }} );
@@ -16,7 +16,8 @@ class TaskController{
         }
         const task = new Task();
         task.task_details = task_details;
-        task.created_at=new Date();
+        task.due_date=due_date;
+        task.created_at = new Date();
         task.email = inbox; 
         
       
@@ -57,10 +58,29 @@ class TaskController{
         }
       }
 
-
-
-
-
+      findTaskByEmail=async(req:Request,res:Response)=>{
+        try {
+          const task = req.query.task_details as string;
+      
+          // Validate that TaskEmail is a string
+          // if (typeof TaskEmail !== 'string') {
+          //   return res.status(400).send({ message: 'Invalid email parameter' });
+          // }
+      
+          const taskRepository = entityManager.getRepository(Task);
+      
+        
+          const tasks = await taskRepository.find({
+            relations: ['email'],
+            where:{ task_details:task}
+          });
+      
+          return res.status(200).send({ message: 'Task data found successfully', taskdata: tasks });
+        } catch (error:any) {
+          return res.status(500).send({ message: error.message });
+        }
+      };
+      
 
 
 

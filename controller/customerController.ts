@@ -27,7 +27,7 @@ catch(error:any){
 }
 }
 
-findCustomer=async(req:Request,res:Response)=>{
+findCustomerByName=async(req:Request,res:Response)=>{
    try{
      // const {first_name}=req.body;
       const customerName = req.query.name as string; 
@@ -64,6 +64,7 @@ findCustomer=async(req:Request,res:Response)=>{
     res.status(400).send({"message":error.message});
  }
 }
+
 
 
 }

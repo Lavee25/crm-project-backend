@@ -8,4 +8,5 @@ router.get('/getemailCustomerData',inboxController.GetEmailAndCustomer);
 router.get('/getemailCustomerData/:id',inboxController.GetEmailbyId); 
 router.patch('/ChangeStatus/:id',inboxController.ChangeEmailStatus); 
 router.get('/getemail-status-true',inboxController.GetEmailAndCustomerByStatus); 
+router.get('/getemailCustomerDatabyEmail',inboxController.GetEmailbyEmail); 
 export default router;
