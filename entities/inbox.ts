@@ -5,10 +5,10 @@ import {
     OneToOne,
     JoinColumn,
     OneToMany,
-    Binary} from "typeorm";
-  import {Customer} from './customer';
+    } from "typeorm";
+import {Customer} from './customer';
 import { Task } from "./task";
-//import { Contect } from "./contect";
+
    
     @Entity()
     export class Inbox{

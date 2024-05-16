@@ -2,12 +2,8 @@ import {
     Entity,
     Column,
     PrimaryGeneratedColumn,
-    OneToOne,
-    JoinColumn,
-    OneToMany,
-   
     } from "typeorm";
-    import {Task} from './task';
+  
    
     @Entity()
     export class Customer {
@@ -22,13 +18,6 @@ import {
 
        @Column()
        public email: string;
-
-      // @OneToMany(()=>Task,(task)=>task.email)
-      // @JoinColumn({name:'task_id'})
-      //  public task:Task;
-
-      //  @Column()
-      //  public status:boolean
 
        @Column() 
        public created_at:Date;
